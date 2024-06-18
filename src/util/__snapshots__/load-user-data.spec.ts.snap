@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`loadUserDetails > loads user data as expected 1`] = `
+{
+  "coolness": -1,
+  "favoriteFood": "sushi",
+  "name": "Burko Smith",
+  "project": [
+    "doces",
+    "massa",
+  ],
+  "snacks": true,
+  "username": "burftx",
+}
+`;
