@@ -1,10 +1,10 @@
-Resumo das funcionalidades:
+<h1>Resumo das funcionalidades:</h1>
 
 <h2>Mocking de Função (Comentado):</h2>
 <p>Existe um bloco comentado que cria um mock para a função loadUserData, retornando dados fictícios. Isso pode ser útil para testes que não dependem da implementação real da função.</p>
 
 
-<h2>Suíte de Testes loadUserDetails:</h2>
+<h2>Suíte de Testes na função de loadUserDetails:</h2>
 
 <ul>
   <li>Teste 1: Verifica se os dados do usuário são carregados corretamente e correspondem a um snapshot salvo.</li>
