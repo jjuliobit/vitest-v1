@@ -1,9 +1,15 @@
-# Vue 3 + TypeScript + Vite
+Resumo das funcionalidades:
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<h2>Mocking de Função (Comentado):</h2>
+<p>Existe um bloco comentado que cria um mock para a função loadUserData, retornando dados fictícios. Isso pode ser útil para testes que não dependem da implementação real da função.</p>
 
-## Recommended Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
+<h2>Suíte de Testes loadUserDetails:</h2>
 
-- Use [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc) for performing the same type checking from the command line, or for generating d.ts files for SFCs.
+<ul>
+  <li>Teste 1: Verifica se os dados do usuário são carregados corretamente e correspondem a um snapshot salvo.</li>
+  <li>Teste 2: Verifica se os dados do usuário correspondem a um snapshot inline fornecido.</li>
+  <li>Teste 3: Verifica se o nível de "coolness" dos usuários é definido corretamente.</li>
+  <li>Teste 4: Verifica se a função lança um erro apropriado quando tenta carregar dados de um usuário inexistente.</li>
+</ul>
+
