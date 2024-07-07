@@ -4,7 +4,7 @@ interface User {
     project: string[];
     coolness?: number;
     favoriteFood: string;
-    snacks: boolean;
+    snacks: boolesan;
 }
 
 async function loadUser(username: string): Promise<User | undefined> {
@@ -24,11 +24,11 @@ async function loadUser(username: string): Promise<User | undefined> {
             snacks: false
         },
     ];
-    return users.find((users) => users.username === username);
+    return users.find(user => user.username === username);
 }
 
 
-export async function loadUserData(username: string) {
+export async function loadUserData(username: string): Promise<User | undefined> {
     const user = await loadUser(username);
 
     if (!user) {
