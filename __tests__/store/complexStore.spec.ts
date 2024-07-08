@@ -1,8 +1,10 @@
+// Importa os módulos necessários
 import { useComplexStore } from "~/store/complexStore";
 import { createPinia, setActivePinia } from "pinia";
 import axios from "axios";
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
+// Dados simulados para os testes
 const mockData = [
     {
         id: 1,
@@ -17,28 +19,32 @@ const mockDataUpdated = [
     }
 ]
 
+// Mocks do axios
 vi.mock('axios');
 
 describe('testing in pinia', () => {
     beforeEach(() => {
+        // Configura um novo Pinia ativo antes de cada teste
         setActivePinia(createPinia());
-        vi.clearAllMocks(); // Clear all mocks before each test
+        vi.clearAllMocks(); // Limpa todos os mocks antes de cada teste
     });
 
     it('should be able to set active pinia', () => {
         const store = useComplexStore();
-        expect(store).toBeTruthy();
+        expect(store).toBeTruthy(); // Verifica se a store foi criada com sucesso
     });
 
     it('fetches data successfully', async () => {
         const store = useComplexStore();
 
-        // Mock axios.get with vi.mocked
+        // Mock do axios.get
         const mockedAxiosGet = vi.mocked(axios.get);
         mockedAxiosGet.mockResolvedValue({ data: mockData });
 
+        // Chama a função fetchData da store
         await store.fetchData();
 
+        // Verifica se os dados foram atribuídos corretamente à store
         expect(store.data).toEqual(mockData);
         expect(store.loading).toBe(false);
         expect(store.error).toBe(null);
@@ -46,69 +52,70 @@ describe('testing in pinia', () => {
 
     it('updateUser successfully updates user data and fetches related data', async () => {
         const store = useComplexStore();
-        const userId = 1; // Replace with a valid user ID
+        const userId = 1; // ID do usuário para teste
 
-        // Mock axios.patch with vi.mocked
+        // Mock do axios.patch
         const mockedAxiosPatch = vi.mocked(axios.patch);
-        mockedAxiosPatch.mockResolvedValueOnce({ data: { id: userId, name: 'John Doe', email: 'john@example.com' } }); // Resolve only once
+        mockedAxiosPatch.mockResolvedValueOnce({ data: { id: userId, name: 'John Doe', email: 'john@example.com' } }); // Resolve apenas uma vez
 
-        // Mock axios.get for fetchData
+        // Mock do axios.get para fetchData
         const mockedAxiosGet = vi.mocked(axios.get);
-        mockedAxiosGet.mockResolvedValueOnce({ data: mockDataUpdated }); // Resolve fetchData with updated data
+        mockedAxiosGet.mockResolvedValueOnce({ data: mockDataUpdated }); // Resolve fetchData com dados atualizados
 
-        // Call updateUser directly (not through the store)
+        // Chama a função updateUser diretamente (não através da store)
         await store.updateUser(userId);
 
-        // Assertions
-        expect(store.user).toEqual({ id: userId, name: 'John Doe', email: 'john@example.com' }); // Verify user data is updated in store
-        expect(store.data).toEqual(mockDataUpdated); // Verify data is updated in store
-        expect(store.loading).toBe(false); // Ensure loading state is set to false
-        expect(store.error).toBe(null);   // Check for no errors
+        // Verificações
+        expect(store.user).toEqual({ id: userId, name: 'John Doe', email: 'john@example.com' }); // Verifica se os dados do usuário foram atualizados na store
+        expect(store.data).toEqual(mockDataUpdated); // Verifica se os dados foram atualizados na store
+        expect(store.loading).toBe(false); // Verifica se o estado de loading está false
+        expect(store.error).toBe(null);   // Verifica se não há erros
     });
 
     it('updateUser handles errors gracefully', async () => {
         const store = useComplexStore();
-        const userId = 123; // Replace with a valid user ID
+        const userId = 123; // ID do usuário para teste
 
-        // Mock axios.patch with vi.mocked
+        // Mock do axios.patch
         const mockedAxiosPatch = vi.mocked(axios.patch);
-        mockedAxiosPatch.mockRejectedValueOnce(new Error('Network error')); // Simulate network error
+        mockedAxiosPatch.mockRejectedValueOnce(new Error('Network error')); // Simula um erro de rede
 
-        // Call updateUser and capture error
+        // Chama a função updateUser e captura o erro
         await store.updateUser(userId).catch((err) => {
             // Verifica se a mensagem de erro é correta
             expect(err.message).toBe(`Failed to update user with ID ${userId}`);
         });
 
-        // Assertions
+        // Verificações
         expect(store.user).toBe(null);
-        expect(store.data).toEqual([]); // User data should remain unchanged
-        expect(store.loading).toBe(false); // Ensure loading state is set to false
-        expect(store.error).toBe('Failed to update user'); // Verify error message is set
+        expect(store.data).toEqual([]); // Os dados do usuário devem permanecer inalterados
+        expect(store.loading).toBe(false); // Verifica se o estado de loading está false
+        expect(store.error).toBe('Failed to update user'); // Verifica se a mensagem de erro foi definida
     });
 
     it('fetchData handles errors gracefully', async () => {
         const store = useComplexStore();
 
-        // Mock axios.get with vi.mocked
+        // Mock do axios.get
         const mockedAxiosGet = vi.mocked(axios.get);
-        mockedAxiosGet.mockRejectedValueOnce(new Error('Network error')); // Simulate network error
+        mockedAxiosGet.mockRejectedValueOnce(new Error('Network error')); // Simula um erro de rede
 
-        // Call fetchData and capture error
+        // Chama a função fetchData e captura o erro
         await store.fetchData().catch((err) => {
             // Verifica se a mensagem de erro é correta
             expect(err.message).toBe('Failed to fetch data from /api/data');
         });
 
-        // Assertions
-        expect(store.data).toEqual([]); // Data should remain unchanged
-        expect(store.loading).toBe(false); // Ensure loading state is set to false
-        expect(store.error).toBe('Failed to fetch data'); // Verify error message is set
+        // Verificações
+        expect(store.data).toEqual([]); // Os dados devem permanecer inalterados
+        expect(store.loading).toBe(false); // Verifica se o estado de loading está false
+        expect(store.error).toBe('Failed to fetch data'); // Verifica se a mensagem de erro foi definida
     });
 
     it("should have expected properties defined", () => {
         const store = useComplexStore();
 
+        // Propriedades esperadas na store
         const expectedProperties = [
             "user",
             "data",
@@ -120,6 +127,7 @@ describe('testing in pinia', () => {
 
         const storeKeys = Object.keys(store);
 
+        // Verifica se todas as propriedades esperadas estão definidas
         expectedProperties.forEach(property => {
             expect(storeKeys).toContain(property);
         });
